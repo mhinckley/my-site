@@ -10,11 +10,13 @@
     <body>
         <div class="page-header">
             {% if user.is_authenticated %}
-                <a href="{% url 'post_new' %}" class="top-menu">add <span class="glyphicon glyphicon-plus"></span></a>
+            <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+            {% else %}
+            <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
             {% endif %}
-            <h1><a href="/">Better Together</a></h1>
+            <h1><a href="{% url 'board.views.post_list' %}">Better Together</a></h1>
         </div>
-        <div class="content container">
+        <div class="content">
             <div class="row">
                 <div class="col-md-12">
                 {% block content %}
@@ -24,3 +26,5 @@
         </div>
     </body>
 </html>
+
+
