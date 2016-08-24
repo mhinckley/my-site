@@ -14,10 +14,6 @@ def post_detail(request, pk):
     return render(request, 'board/post_detail.html', {'post': post})
 
 def post_new(request):
-    form = PostForm()
-    return render(request, 'board/post_edit.html', {'form': form})
-
-def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
@@ -29,3 +25,7 @@ def post_new(request):
     else:
         form = PostForm()
     return render(request, 'board/post_edit.html', {'form': form})
+
+def genre_posts(request, content_type):
+    posts = Post.objects.filter(content_type=content_type).order_by('-published_date')
+    return render(request, 'board/post_list.html', {'posts': posts})
