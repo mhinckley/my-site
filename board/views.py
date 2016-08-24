@@ -29,3 +29,20 @@ def post_new(request):
 def genre_posts(request, content_type):
     posts = Post.objects.filter(content_type=content_type).order_by('-published_date')
     return render(request, 'board/post_list.html', {'posts': posts})
+
+def remember_posts(request, when):
+    posts = Post.objects.filter(when=when).order_by('-published_date')
+    return render(request, 'board/post_list.html', {'posts': posts})
+
+def user_posts(request, author):
+    posts = Post.objects.filter(author=author).order_by('-published_date')
+    return render(request, 'board/post_list.html', {'posts': posts})
+
+def to_posts(request, to_field):
+    posts = Post.objects.filter(to_field=to_field).order_by('-published_date')
+    return render(request, 'board/post_list.html', {'posts': posts})
+
+
+#Parameters in the def are recieved from the url
+#Second argument in return defines which template
+#Third argument in return function defines what object will be available in the templates
