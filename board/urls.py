@@ -9,7 +9,11 @@ urlpatterns = [
     url(r'^post/when/(?P<when>[a-zA-Z ]+)/$', views.remember_posts, name='remember_posts'),
     url(r'^post/user/(?P<author>[a-zA-Z]+)/$', views.user_posts, name='user_posts'),
     url(r'^post/to_field/(?P<to_field>[a-zA-Z ]+)/$', views.to_posts, name='to_posts'),
+    url(r'^register/$', views.register, name='register'), # ADD NEW PATTERN!
 ]
+
+
+
 
 # content_type above links to the parameter in the view function
 # third is the name of the view
