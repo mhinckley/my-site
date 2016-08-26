@@ -7,7 +7,7 @@ urlpatterns = [
     url(r'^post/new/$', views.post_new, name='post_new'),
     url(r'^post/genre/(?P<content_type>[a-zA-Z ]+)/$', views.genre_posts, name='genre_posts'),
     url(r'^post/when/(?P<when>[a-zA-Z ]+)/$', views.remember_posts, name='remember_posts'),
-    url(r'^post/user/(?P<author>[a-zA-Z]+)/$', views.user_posts, name='user_posts'),
+    url(r'^post/user/(?P<author>[a-zA-Z0-9_-]+)/$', views.user_posts, name='user_posts'),
     url(r'^post/to_field/(?P<to_field>[a-zA-Z ]+)/$', views.to_posts, name='to_posts'),
     url(r'^register/$', views.register, name='register'), # ADD NEW PATTERN!
 ]

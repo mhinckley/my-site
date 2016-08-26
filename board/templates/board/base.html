@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <html>
     <head>
-        <title>Better Together</title>
+        <title>Idealogue</title>
         <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
@@ -13,9 +13,9 @@
             <a href="{% url 'post_new' %}" class="top-menu">new post<span class="glyphicon glyphicon-plus"></span></a>
             <p class="top-menu">Hello {{ user.username }}<small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
             {% else %}
-            <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
+            <a href="{% url 'login' %}" class="top-menu">login <span class="glyphicon glyphicon-lock"></span></a>
             {% endif %}
-            <h1><a href="{% url 'board.views.post_list' %}">Django Girls</a></h1>
+            <h1><a href="{% url 'board.views.post_list' %}">Idealogue</a></h1>  <!--Better Together-->
         </div>
         <div class="content">
             <div class="row">
