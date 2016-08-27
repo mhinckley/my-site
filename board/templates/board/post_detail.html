@@ -3,24 +3,31 @@
 {% block content %}
     <div class="post">
         <h3>To <a href="{% url 'post_detail' pk=post.pk %}">{{ post.to_field }}</a>, <a href="{% url 'post_detail' pk=post.pk %}">{{ post.do_field }}</a>.</h3>
+
         <p>By: <a href="{% url 'post_detail' pk=post.pk %}">  {{ post.author }}</a></p>
         <p>Remember this: <a href="{% url 'post_detail' pk=post.pk %}">  {{ post.when }}</a></p>
         <p>Learn more here: <a href="{% url 'post_detail' pk=post.pk %}">  {{ post.support_link }}</a></p>
-        <p>{{ post.summary }}</p>
-
-
-
 
         {% if post.published_date %}
             <div class="date">
-              	<p>Created: {{ post.published_date|linebreaksbr }}</p>
+                <p>Created: {{ post.published_date|linebreaksbr }}</p>
             </div>
         {% endif %}
 
-        {% for comment in post.comment_set.all %}
-            <p> {{comment.entry}} </p>
-        {% endfor %}
+        <div>
+            <p>{{ post.summary }}</p>
+        </div>
+        <div>
+            <a href="{% url 'comment_new' post=post.pk %}">Leave a comment</a>
+            {% for comment in post.comment_set.all %}
+                <p> "{{comment.entry}}" {{comment.author}}, {{comment.created_date}}  </p>
+                <p>  </p>
+            {% endfor %}
+        </div>
+
+
 
     </div>
+
 {% endblock %}
 
