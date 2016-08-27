@@ -51,7 +51,7 @@ def remember_posts(request, when):
     return render(request, 'board/post_list.html', {'posts': posts})
 
 def user_posts(request, author):
-    posts = Post.objects.filter(author=author).order_by('-published_date')
+    posts = Post.objects.filter(author__username=author).order_by('-published_date')
     return render(request, 'board/post_list.html', {'posts': posts})
 
 def to_posts(request, to_field):

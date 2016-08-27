@@ -21,3 +21,9 @@ class Post(models.Model):
         return self.to_field
 
 
+class Comment(models.Model):
+    author = models.ForeignKey('auth.User')
+    entry = models.CharField(max_length=100, default='xxx')
+    post = models.ForeignKey(Post)
+    created_date = models.DateTimeField(
+            default=timezone.now)
