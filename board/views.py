@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, render, get_object_or_404
 from django.utils import timezone
-from .models import Post
+from .models import Post, Comment
 from .forms import PostForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.views.generic.edit import CreateView
+from django.core.urlresolvers import reverse
 
 
 def post_list(request):
@@ -112,3 +113,18 @@ def user_login(request):
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
         return render(request, 'registration/login.html', {})
+
+
+class CommentCreate(CreateView):
+    model = Comment
+    fields = ['entry']
+
+    def get_success_url(self):
+        return reverse("post_detail", kwargs = {"pk": self.kwargs["post"]})
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post = Post.objects.get(pk=self.kwargs["post"])
+        return super(CommentCreate, self).form_valid(form)
+
+

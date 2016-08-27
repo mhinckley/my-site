@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^post/user/(?P<author>[a-zA-Z0-9_-]+)/$', views.user_posts, name='user_posts'),
     url(r'^post/to_field/(?P<to_field>[a-zA-Z ]+)/$', views.to_posts, name='to_posts'),
     url(r'^register/$', views.register, name='register'), # ADD NEW PATTERN!
+    url(r'^post/(?P<post>\d+)/comment/$', views.CommentCreate.as_view(), name='comment_new'),
 ]
 
 

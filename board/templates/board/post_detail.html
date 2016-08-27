@@ -16,6 +16,11 @@
               	<p>Created: {{ post.published_date|linebreaksbr }}</p>
             </div>
         {% endif %}
+
+        {% for comment in post.comment_set.all %}
+            <p> {{comment.entry}} </p>
+        {% endfor %}
+
     </div>
 {% endblock %}
 
