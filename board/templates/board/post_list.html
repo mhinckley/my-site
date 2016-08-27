@@ -14,23 +14,35 @@
         </div>
     {% endfor %}
 
-<div class="pagination">
-    <span class="step-links">
-        {% if posts.has_previous %}
-            <a href="?page={{ posts.previous_page_number }}">previous</a>
-        {% endif %}
-
-        {% if posts.has_other_pages %}
-        <span class="current">
-            Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
-        </span>
-				{% endif %}
-
-        {% if posts.has_next %}
-            <a href="?page={{ posts.next_page_number }}">next</a>
-        {% endif %}
-    </span>
-</div>
+    {% if posts.has_other_pages %}
+        <div id="outer-pages">
+            <nav aria-label="Page navigation" id="inner-pages">
+              <ul class="pagination">
+                <li class="page-item">
+                {% if posts.has_previous %}
+                  <a class="page-link" href="?page={{ posts.previous_page_number }}" aria-label="Previous">
+                {% else %}
+                  <a class="page-link" id="dead-link" aria-label="Previous">
+                {% endif %}
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                </li>
+                <li class="page-item"><a class="page-link" id="dead-link">Page {{ posts.number }} of {{ posts.paginator.num_pages }}</a></li>
+                <li class="page-item">
+                {% if posts.has_next %}
+                  <a class="page-link" href="?page={{ posts.next_page_number }}" aria-label="Previous">
+                {% else %}
+                  <a class="page-link" aria-label="Next" id="dead-link">
+                {% endif %}
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+        </div>
+    {% endif %}
 
 {% endblock %}
 
