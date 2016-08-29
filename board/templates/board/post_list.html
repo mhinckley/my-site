@@ -1,6 +1,27 @@
 {% extends 'board/base.html' %}
 
 {% block content %}
+
+<!--
+    <div id="searchContainer">
+        <ul class="input-list style-2 clearfix" style="margin-left: -45px">
+          <input type="text" placeholder="Search here (this is a close hold)..." style="font-size:16px" onclick="$('#resultList').empty(); $('#resultSum').empty(); this.value='';">
+        </ul> 
+    </div>
+
+<div class="row" id="resultRow">
+
+    <div id="leftMargin">
+    </div>
+    
+    <div id="resultArea">
+        <p id="resultSum"></p> <br/> <br/>
+        <p id="resultList"></p>
+    </div>
+
+</div>
+
+-->
     {% for post in posts %}
         <div class="parent_1">
             <div class="vote">
@@ -43,6 +64,9 @@
             </nav>
         </div>
     {% endif %}
+
+
+
 
 {% endblock %}
 

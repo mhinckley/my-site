@@ -1,0 +1,22 @@
+{% extends 'board/base.html' %}
+
+{% block content %}
+
+<div class="row" style="margin-top: 30px">
+  <ul class="input-list style-2 clearfix" style="margin-left: -45px">
+    <input type="text" placeholder="Search me..." id="userInput" onkeydown="if (event.keyCode == 13 && document.getElementById('userInput').value != '') location.href='search.html', capture()">
+  </ul> 
+</div>
+
+<div class="row" id="resultRow">
+
+    <div id="leftMargin">
+    </div>
+    
+    <div id="resultArea">
+        <p id="resultSum"></p> <br/> <br/>
+        <p id="resultList"></p>
+    </div>
+
+</div>
+{% endblock %}
