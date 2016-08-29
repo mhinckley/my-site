@@ -6,11 +6,11 @@ class Post(models.Model):
     author = models.ForeignKey('auth.User')
     to_field = models.CharField(max_length=50, default='xxx')
     do_field = models.CharField(max_length=75, default='xxx')
-    when = models.CharField(max_length=50, default='sss')
-    content_type = models.CharField(max_length=50, blank=True, default='some string')
-    support_link = models.CharField(max_length=1000, null=False, default='xxx')
-    summary = models.TextField(max_length=1000, default='xxx')
-    contributor = models.CharField(max_length=50, default='Adam Grant')
+    when = models.CharField(max_length=50, default='All day')
+    content_type = models.CharField(max_length=50, blank=True, default='Science')
+    support_link = models.CharField(max_length=1000, null=False, default='www.expert.edu')
+    summary = models.TextField(max_length=1000, default='This is a summary.')
+    contributor = models.CharField(max_length=50, default='Smart person')
     published_date = models.DateTimeField(
             default=timezone.now)
 
