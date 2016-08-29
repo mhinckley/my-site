@@ -3,7 +3,9 @@
 {% block content %}
     <div class="post">
         <h3>To <a href="{% url 'post_detail' pk=post.pk %}">{{ post.to_field }}</a>, <a href="{% url 'post_detail' pk=post.pk %}">{{ post.do_field }}</a>.</h3>
+    </div>
 
+    
         <p>By: <a href="{% url 'post_detail' pk=post.pk %}">  {{ post.author }}</a></p>
         <p>Remember this: <a href="{% url 'post_detail' pk=post.pk %}">  {{ post.when }}</a></p>
         <p>Learn more here: <a href="{% url 'post_detail' pk=post.pk %}">  {{ post.support_link }}</a></p>
@@ -31,7 +33,7 @@
 
 
 
-    </div>
+
 
 {% endblock %}
 
