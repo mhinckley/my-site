@@ -1,11 +1,6 @@
 {% extends 'board/base.html' %}
 
 {% block content %}
-    <div class="buffer">
-        <video id="bgVideo"  preload="true" autoplay loop muted>
-            <source src= "./static/images/About Friends 2014-HD.mp4" type="video/mp4"></source>
-        </video>
-    </div>
 
     {% for post in posts %}
         <div class="parent_1">
@@ -14,7 +9,7 @@
             </div>
             <div class="post">
                 <h3>To <a href="{% url 'to_posts' to_field=post.to_field %}" class="to">{{ post.to_field }}</a>, you can <a href="{% url 'post_detail' pk=post.pk %}" class="do">{{ post.do_field }}</a>.</h3>
-                <p class="sub">Genre: <a href="{% url 'genre_posts' content_type=post.content_type %}">  {{ post.content_type }}</a> // Remember when: <a href="{% url 'remember_posts' when=post.when %}">  {{ post.when }}</a> // Shared by: <a href="{% url 'user_posts' author=post.author %}"> {{ post.author }}</a></p>
+                <p class="sub">Expert: <a href="{% url 'contributor_posts' contributor=post.contributor %}"> {{ post.contributor }}</a> // Remember when: <a href="{% url 'remember_posts' when=post.when %}">  {{ post.when }}</a> // Shared by: <a href="{% url 'user_posts' author=post.author %}"> {{ post.author }}</a></p>
                 <p class="sub">{{ post.published_date }}</p>
             </div>
         </div>

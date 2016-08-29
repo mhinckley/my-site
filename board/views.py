@@ -43,6 +43,10 @@ def post_new(request):
         form = PostForm()
     return render(request, 'board/post_edit.html', {'form': form})
 
+def contributor_posts(request, contributor):
+    posts = Post.objects.filter(contributor=contributor).order_by('-published_date')
+    return render(request, 'board/post_list.html', {'posts': posts})
+
 def genre_posts(request, content_type):
     posts = Post.objects.filter(content_type=content_type).order_by('-published_date')
     return render(request, 'board/post_list.html', {'posts': posts})

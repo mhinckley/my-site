@@ -10,6 +10,7 @@ class Post(models.Model):
     content_type = models.CharField(max_length=50, blank=True, default='some string')
     support_link = models.CharField(max_length=1000, null=False, default='xxx')
     summary = models.TextField(max_length=1000, default='xxx')
+    contributor = models.CharField(max_length=50, default='Adam Grant')
     published_date = models.DateTimeField(
             default=timezone.now)
 
