@@ -9,9 +9,12 @@ urlpatterns = [
     url(r'^post/genre/(?P<content_type>[a-zA-Z ]+)/$', views.genre_posts, name='genre_posts'),
     url(r'^post/when/(?P<when>[a-zA-Z ]+)/$', views.remember_posts, name='remember_posts'),
     url(r'^post/user/(?P<author>[a-zA-Z0-9_-]+)/$', views.user_posts, name='user_posts'),
-    url(r'^post/to_field/(?P<to_field>[a-zA-Z ]+)/$', views.to_posts, name='to_posts'),
+    url(r'^post/to_field/(?P<to_field>[a-zA-Z0-9 ]+)/$', views.to_posts, name='to_posts'),
     url(r'^register/$', views.register, name='register'), # ADD NEW PATTERN!
     url(r'^post/(?P<post>\d+)/comment/$', views.CommentCreate.as_view(), name='comment_new'),
+    url(r'^like/$', views.like_button, name='like_button'),
+    url(r'^post/mylist/$', views.my_list, name='my_list'),
+    url(r'^home/$', views.home, name='home'),
 ]
 
 

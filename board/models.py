@@ -11,6 +11,7 @@ class Post(models.Model):
     support_link = models.CharField(max_length=1000, null=False, default='www.expert.edu')
     summary = models.TextField(max_length=1000, default='This is a summary.')
     contributor = models.CharField(max_length=50, default='Smart person')
+    likes = models.ManyToManyField('auth.User', related_name='likes')
     published_date = models.DateTimeField(
             default=timezone.now)
 
@@ -20,6 +21,14 @@ class Post(models.Model):
 
     def __str__(self):
         return self.to_field
+
+    @property
+    def total_likes(self):
+        """
+        Likes for the post
+        :return: Integer: Subscribes for the post
+        """
+        return self.likes.count()
 
 
 class Comment(models.Model):

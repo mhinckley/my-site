@@ -1,0 +1,150 @@
+body {
+  font-family: Lato;
+}
+
+#movie-container {
+    min-height: 500px;
+    padding-bottom: 50px;
+    position: relative;
+    overflow: hidden;
+}
+
+
+
+#grad-panel {
+    height: 350px;
+    background: linear-gradient(transparent 0%, white 100%);
+    margin-top: -350px;
+
+}
+
+video {
+    width:100%;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index:-1;
+}
+
+.overlay-logo {
+    position:absolute;
+    z-index:1;
+    color: white;
+    left: 2%;
+    top: 2%;
+    font-size: 20px;
+}
+
+.overlay-tagline {
+    position:absolute;
+    width: 100%;
+    top: 40%;
+    z-index:1;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+h5 {
+  font-size: 40px;
+}
+
+.background-color-one {
+    background-color: #6ecadc;
+}
+
+.background-color-two {
+    background-color: #e9a820;
+}
+
+
+input[type="text"] {
+  display: block;
+  margin: 0;
+  font-size: 18px;
+  appearance: none;
+  box-shadow: none;
+  border-radius: none;
+}
+input[type="text"]:focus {
+  outline: none;
+}
+
+.style-4 input[type="text"] {
+  padding-top: 20px;
+  background-color: transparent;
+  border: none;
+  width: 400px;
+  margin-left: 32%;
+  border-bottom: solid 2px #6ecadc;
+  transition: border 0.3s;
+  text-align: center;
+  font-color: white;
+}
+
+.style-4 input[type="text"]:focus,
+.style-4 input[type="text"].focus {
+  border-bottom: solid 4px #e9a820;
+}
+
+::-webkit-input-placeholder { /* Chrome */
+  color: white;
+  opacity: 0.8;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: white;
+  opacity: 0.8;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: white;
+  opacity: 0.8;
+}
+:-moz-placeholder { /* Firefox 4 - 18 */
+  color: white;
+  opacity: 0.8;
+}
+
+
+#first-panel {
+    height: 370px;
+    width:100%;
+    background-color: white;
+}
+
+.panel-title {
+  margin-left: 4%;
+  width: 95%;
+  border-bottom: solid 1px gray;
+}
+
+.images {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+.panel-pic-container {
+  margin-left: 4%;
+  width: 95%;
+  height: 10px;
+  padding-top: 20px;
+}
+
+.img-pic-container {
+  position: relative;
+}
+
+.img-text-container {
+    position:absolute;
+    width: 100%; 
+    left: 30px;
+    bottom: 0;
+    font-size:20px; 
+    background: transparent;
+    color: white;
+    font-weight: bold;
+}
+
+p {
+  font-size: 14px;
+}
+

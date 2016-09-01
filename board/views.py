@@ -2,13 +2,17 @@ from django.shortcuts import render, redirect, render, get_object_or_404
 from django.utils import timezone
 from .models import Post, Comment
 from .forms import PostForm
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import CreateView
 from django.core.urlresolvers import reverse
+try:
+    from django.utils import simplejson as json
+except ImportError:
+    import json
 
 
 def post_list(request):
@@ -63,6 +67,11 @@ def to_posts(request, to_field):
     posts = Post.objects.filter(to_field=to_field).order_by('-published_date')
     return render(request, 'board/post_list.html', {'posts': posts})
 
+def my_list(request):
+    posts = Post.objects.filter(likes=request.user.pk).order_by('-published_date')
+    return render(request, 'board/post_list.html', {'posts': posts})
+
+
 #Parameters in the def are recieved from the url
 #Second argument in return defines which template
 #Third argument in return function defines what object will be available in the templates
@@ -73,7 +82,12 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
-            return HttpResponseRedirect("/")
+            new_user = authenticate(username=form.cleaned_data['username'],
+                                    password=form.cleaned_data['password1'],
+                                    )
+            login(request, new_user)
+            return HttpResponseRedirect('/')
+
     else:
         form = UserCreationForm()
     return render(request, "registration/register.html", {
@@ -130,5 +144,26 @@ class CommentCreate(CreateView):
         form.instance.author = self.request.user
         form.instance.post = Post.objects.get(pk=self.kwargs["post"])
         return super(CommentCreate, self).form_valid(form)
+
+
+@login_required(login_url='/user')
+def like_button(request):
+    if request.method == 'POST':
+        user = request.user
+        id = request.POST.get('pk', None)
+        post = get_object_or_404(Post, pk=id)
+
+        if post.likes.filter(id=user.id).exists():
+            post.likes.remove(user)
+        else:
+            post.likes.add(user)
+
+    context = {'likes_count': post.total_likes}
+    return JsonResponse(context)
+
+
+def home(request):
+    return render(request, 'board/home.html')
+
 
 

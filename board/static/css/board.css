@@ -101,3 +101,11 @@ h3 {
     padding-left: 20px;
 }
 
+
+.btn-default-sm {
+    background-color: white; 
+    border-color: gray; 
+}
+
+
+

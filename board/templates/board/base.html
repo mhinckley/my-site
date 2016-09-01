@@ -1,18 +1,28 @@
+<!DOCTYPE html>
 {% load staticfiles %}
-<html>
+<html lang="en">
     <head>
         <title>Idealogical</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
         <script src="{% static 'js/jQuery.js' %}"></script>
         <script src="http://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
         <link rel="stylesheet" href="{% static 'css/board.css' %}">
         <script src="{% static 'js/script.js' %}"></script>
     </head>
     <body>
 
-    <nav class="navbar-fixed-top navbar-default">
+    <nav class="navbar-fixed-top navbar-default" id="nav">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -36,10 +46,10 @@
             <button type="submit" class="btn btn-default">Search</button>
           </form>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="{% url 'post_list' %}">Latest</a></li>
             {% if user.is_authenticated %}
             <li><a href="{% url 'post_new' %}">New Post</a></li>
-            <li><a href="{% url 'logout' %}">Log out</a></li>
+            <li><a href="{% url 'my_list' %}">My List</a></li>
+            <li><a href="{% url 'logout' %}">Log Out</a></li>
             {% else %}
             <li><a href="{% url 'login' %}">Sign In</a></li>
             <li><a href="{% url 'register' %}">Register</a></li>
