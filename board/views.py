@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import CreateView
 from django.core.urlresolvers import reverse
+
 try:
     from django.utils import simplejson as json
 except ImportError:
@@ -83,6 +84,7 @@ def register(request):
         if form.is_valid():
             new_user = form.save()
             new_user = authenticate(username=form.cleaned_data['username'],
+                                    email=form.cleaned_data['email'],
                                     password=form.cleaned_data['password1'],
                                     )
             login(request, new_user)

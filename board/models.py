@@ -4,13 +4,12 @@ from django.utils import timezone
 
 class Post(models.Model):
     author = models.ForeignKey('auth.User')
-    to_field = models.CharField(max_length=50, default='xxx')
-    do_field = models.CharField(max_length=75, default='xxx')
-    when = models.CharField(max_length=50, default='All day')
-    content_type = models.CharField(max_length=50, blank=True, default='Science')
-    support_link = models.CharField(max_length=1000, null=False, default='www.expert.edu')
-    summary = models.TextField(max_length=1000, default='This is a summary.')
-    contributor = models.CharField(max_length=50, default='Smart person')
+    to_field = models.CharField(max_length=50)
+    do_field = models.CharField(max_length=75)
+    when = models.CharField(max_length=50)
+    support_link = models.CharField(max_length=1000, null=False)
+    summary = models.TextField(max_length=400)
+    contributor = models.CharField(max_length=50)
     likes = models.ManyToManyField('auth.User', related_name='likes')
     published_date = models.DateTimeField(
             default=timezone.now)

@@ -11,8 +11,26 @@
             </div>
             <div class="post">
                 <h3>To <a href="{% url 'to_posts' to_field=post.to_field %}" class="to">{{ post.to_field }}</a>, you can <a href="{% url 'post_detail' pk=post.pk %}" class="do">{{ post.do_field }}</a>.</h3>
-                <p class="sub">Expert: <a href="{% url 'contributor_posts' contributor=post.contributor %}"> {{ post.contributor }}</a> // Remember when: <a href="{% url 'remember_posts' when=post.when %}">  {{ post.when }}</a> // Shared by: <a href="{% url 'user_posts' author=post.author %}"> {{ post.author }}</a></p>
-                <p class="sub">{{ post.published_date }}</p>
+                <p class="sub">Class: <a href="{% url 'contributor_posts' contributor=post.contributor %}"> {{ post.contributor }}</a> // Topics: <a>#influence</a>, <a>#persuasion</a>, <a>#hardpower</a></p>
+
+                <!--<p class="sub">{{ post.published_date|date:"F n, Y" }}</p>-->
+                <p class="sub">Remind me:  
+                  <span>
+                    <button type="button" class="btn btn-default-sm remind-btn">
+                      <span>Daily</span>
+                    </button>
+                  </span>
+                  <span>
+                    <button type="button" class="btn btn-default-sm remind-btn">
+                      <span>Weekly</span>
+                    </button>
+                  </span>
+                  <span>
+                    <button type="button" class="btn btn-default-sm remind-btn">
+                      <span>Monthly</span>
+                    </button>
+                  </span>
+                </p>
             
             </div>
         </div>
