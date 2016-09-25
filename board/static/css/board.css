@@ -113,4 +113,9 @@ h3 {
     width: 55px;
 }
 
+.btn-selected{
+    background: gray;
+    border-color: white;
+    color: white;
+}
 

@@ -13,6 +13,9 @@ urlpatterns = [
     url(r'^register/$', views.register, name='register'), # ADD NEW PATTERN!
     url(r'^post/(?P<post>\d+)/comment/$', views.CommentCreate.as_view(), name='comment_new'),
     url(r'^like/$', views.like_button, name='like_button'),
+    url(r'^daily/$', views.daily_button, name='daily_button'),
+    url(r'^weekly/$', views.weekly_button, name='weekly_button'),
+    url(r'^monthly/$', views.monthly_button, name='monthly_button'),
     url(r'^post/mylist/$', views.my_list, name='my_list'),
     url(r'^home/$', views.home, name='home'),
 ]

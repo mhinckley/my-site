@@ -18,6 +18,7 @@ except ImportError:
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    liked_posts = Post.objects.filter(likes=request.user.pk)
     paginator = Paginator(posts, 10)
     page = request.GET.get('page')
     try:
@@ -29,7 +30,7 @@ def post_list(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         posts = paginator.page(paginator.num_pages)
 
-    return render(request, 'board/post_list.html', {'posts': posts})
+    return render(request, 'board/post_list.html', {'posts': posts, 'liked_posts': liked_posts})
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -162,6 +163,79 @@ def like_button(request):
 
     context = {'likes_count': post.total_likes}
     return JsonResponse(context)
+
+
+@login_required(login_url='/user')
+def daily_button(request):
+    if request.method == 'POST':
+        user = request.user
+        id = request.POST.get('pk', None)
+        post = get_object_or_404(Post, pk=id)
+            
+        if post.weekly_follows.filter(id=user.id).exists():
+            post.weekly_follows.remove(user)
+            post.daily_follows.add(user)
+        if post.monthly_follows.filter(id=user.id).exists():
+            post.monthly_follows.remove(user)
+            post.daily_follows.add(user)
+        if post.daily_follows.filter(id=user.id).exists():
+            post.daily_follows.remove(user)
+            post.all_follows.remove(user) 
+        else:
+            post.daily_follows.add(user)
+            post.all_follows.add(user)
+
+    context = {'daily_count': post.total_daily, 'weekly_count': post.total_weekly, 'monthly_count': post.total_monthly, 'all_count': post.total_all_follows_count}
+    return JsonResponse(context)
+
+
+@login_required(login_url='/user')
+def weekly_button(request):
+    if request.method == 'POST':
+        user = request.user
+        id = request.POST.get('pk', None)
+        post = get_object_or_404(Post, pk=id)
+
+        if post.daily_follows.filter(id=user.id).exists():
+            post.daily_follows.remove(user)
+            post.weekly_follows.add(user)
+        if post.monthly_follows.filter(id=user.id).exists():
+            post.monthly_follows.remove(user)
+            post.weekly_follows.add(user)
+        if post.weekly_follows.filter(id=user.id).exists():
+            post.weekly_follows.remove(user)
+            post.all_follows.remove(user) 
+        else:
+            post.weekly_follows.add(user)
+            post.all_follows.add(user)
+
+    context = {'daily_count': post.total_daily, 'weekly_count': post.total_weekly, 'monthly_count': post.total_monthly, 'all_count': post.total_all_follows_count}
+    return JsonResponse(context)
+
+
+@login_required(login_url='/user')
+def monthly_button(request):
+    if request.method == 'POST':
+        user = request.user
+        id = request.POST.get('pk', None)
+        post = get_object_or_404(Post, pk=id)
+
+        if post.daily_follows.filter(id=user.id).exists():
+            post.daily_follows.remove(user)
+            post.monthly_follows.add(user)
+        if post.weekly_follows.filter(id=user.id).exists():
+            post.weekly_follows.remove(user)
+            post.monthly_follows.add(user)
+        if post.monthly_follows.filter(id=user.id).exists():
+            post.monthly_follows.remove(user)
+            post.all_follows.remove(user) 
+        else:
+            post.monthly_follows.add(user)
+            post.all_follows.add(user)
+
+    context = {'daily_count': post.total_daily, 'weekly_count': post.total_weekly, 'monthly_count': post.total_monthly, 'all_count': post.total_all_follows_count}
+    return JsonResponse(context)
+
 
 
 def home(request):

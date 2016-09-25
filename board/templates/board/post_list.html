@@ -4,10 +4,41 @@
 
     {% for post in posts %}
         <div class="parent_1 post{{ post.pk }}">
+
             <div class="vote">
-                <button type="button" class="btn btn-default-sm like" name="{{ post.id }}" value="Like" />
-                    <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span> <span class="like_count">{{ post.total_likes }}</span>
+              {% if post in liked_posts %}
+                <button type="button" class="btn btn-default-sm unlike btn-selected" name="{{ post.id }}" value="Like" />
+                    <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="like_count">{{ post.total_likes }}</span>
                 </button>
+                <script> 
+                  $('.unlike').click(function(){
+                    var pk = $(this).attr('name');
+                    $.ajax({
+                             type: "POST",
+                             url: "{% url 'like_button' %}",
+                             data: {'pk': pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                             dataType: "json",
+                             success: function(response) {
+                                    console.log('Post likes count is now ' + response.likes_count);
+                                    $('.post' + pk + ' .like_count').html(response.likes_count);
+                                    $('.post' + pk + ' .unlike').css('background', 'white');
+                                    $('.post' + pk + ' .glyphicon').css('color', 'gray');
+                                    $('.post' + pk + ' .like_count').css('color', 'gray');
+                                    $('.post' + pk + ' .unlike').css('border-color', 'gray');
+                              },
+                             error: function(response, e) {
+                                    console.log('Something went wrong.');
+                                    window.location.href = '{% url 'register' %}';
+                             }
+                        });
+                    })
+              </script>
+              {% else %}
+                <button type="button" class="btn btn-default-sm like" name="{{ post.id }}" value="Like" />
+                    <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <span class="like_count">{{ post.total_likes }}</span>
+                </button>
+              {% endif %}
+
             </div>
             <div class="post">
                 <h3>To <a href="{% url 'to_posts' to_field=post.to_field %}" class="to">{{ post.to_field }}</a>, you can <a href="{% url 'post_detail' pk=post.pk %}" class="do">{{ post.do_field }}</a>.</h3>
@@ -16,18 +47,23 @@
                 <!--<p class="sub">{{ post.published_date|date:"F n, Y" }}</p>-->
                 <p class="sub">Remind me:  
                   <span>
-                    <button type="button" class="btn btn-default-sm remind-btn">
-                      <span>Daily</span>
+                    <button type="button" class="btn btn-default-sm remind-btn daily-btn" name="{{ post.id }}" value="Daily" />
+                      <span class="daily_count">Daily {{ post.total_daily }}</span>
                     </button>
                   </span>
                   <span>
-                    <button type="button" class="btn btn-default-sm remind-btn">
-                      <span>Weekly</span>
+                    <button type="button" class="btn btn-default-sm remind-btn weekly-btn" name="{{ post.id }}" value="Weekly" />
+                      <span class="weekly_count">Weekly {{ post.total_weekly }}</span>
                     </button>
                   </span>
                   <span>
-                    <button type="button" class="btn btn-default-sm remind-btn">
-                      <span>Monthly</span>
+                    <button type="button" class="btn btn-default-sm remind-btn monthly-btn" name="{{ post.id }}" value="Monthly" />
+                      <span class="monthly_count">Monthly {{ post.total_monthly }}</span>
+                    </button>
+                  </span>
+                  <span>
+                    <button type="button" class="btn btn-default-sm remind-btn counter-btn" name="{{ post.id }}" value="Counter" />
+                      <span class="all_count">Total {{ post.total_all_follows }}</span>
                     </button>
                   </span>
                 </p>
@@ -67,6 +103,7 @@
     {% endif %}
 
 <script>
+
 $('.like').click(function(){
   var pk = $(this).attr('name');
   $.ajax({
@@ -77,13 +114,84 @@ $('.like').click(function(){
            success: function(response) {
                   console.log('Post likes count is now ' + response.likes_count);
                   $('.post' + pk + ' .like_count').html(response.likes_count);
+                  $('.post' + pk + ' .like').css('background', 'gray');
+                  $('.post' + pk + ' .glyphicon').css('color', 'white');
+                  $('.post' + pk + ' .like_count').css('color', 'white');
+                  $('.post' + pk + ' .like').css('border-color', 'white');
             },
            error: function(response, e) {
                   console.log('Something went wrong.');
                   window.location.href = '{% url 'register' %}';
            }
       });
-    })
+  })
+
+
+$('.daily-btn').click(function(){
+  var pk = $(this).attr('name');
+  $.ajax({
+           type: "POST",
+           url: "{% url 'daily_button' %}",
+           data: {'pk': pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+           dataType: "json",
+           success: function(response) {
+                  console.log('Post daily count is now ' + response.daily_count);
+                  $('.post' + pk + ' .daily_count').html(response.daily_count);
+                  $('.post' + pk + ' .weekly_count').html(response.weekly_count);
+                  $('.post' + pk + ' .monthly_count').html(response.monthly_count);
+                  $('.post' + pk + ' .all_count').html(response.all_count);
+            },
+           error: function(response, e) {
+                  console.log('Something went wrong.');
+                  window.location.href = '{% url 'register' %}';
+           }
+      });
+  })
+
+$('.weekly-btn').click(function(){
+  var pk = $(this).attr('name');
+  $.ajax({
+           type: "POST",
+           url: "{% url 'weekly_button' %}",
+           data: {'pk': pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+           dataType: "json",
+           success: function(response) {
+                  console.log('Post weekly count is now ' + response.weekly_count);
+                  $('.post' + pk + ' .daily_count').html(response.daily_count);
+                  $('.post' + pk + ' .weekly_count').html(response.weekly_count);
+                  $('.post' + pk + ' .monthly_count').html(response.monthly_count);
+                  $('.post' + pk + ' .all_count').html(response.all_count);
+            },
+           error: function(response, e) {
+                  console.log('Something went wrong.');
+                  window.location.href = '{% url 'register' %}';
+           }
+      });
+  })
+
+$('.monthly-btn').click(function(){
+  var pk = $(this).attr('name');
+  $.ajax({
+           type: "POST",
+           url: "{% url 'monthly_button' %}",
+           data: {'pk': pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+           dataType: "json",
+           success: function(response) {
+                  console.log('Post monthly count is now ' + response.monthly_count);
+                  $('.post' + pk + ' .daily_count').html(response.daily_count);
+                  $('.post' + pk + ' .weekly_count').html(response.weekly_count);
+                  $('.post' + pk + ' .monthly_count').html(response.monthly_count);
+                  $('.post' + pk + ' .all_count').html(response.all_count);
+            },
+           error: function(response, e) {
+                  console.log('Something went wrong.');
+                  window.location.href = '{% url 'register' %}';
+           }
+      });
+  })
+
+
+
 </script>
 
 

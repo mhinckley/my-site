@@ -11,6 +11,10 @@ class Post(models.Model):
     summary = models.TextField(max_length=400)
     contributor = models.CharField(max_length=50)
     likes = models.ManyToManyField('auth.User', related_name='likes')
+    daily_follows = models.ManyToManyField('auth.User', related_name='daily_follows')
+    weekly_follows = models.ManyToManyField('auth.User', related_name='weekly_follows')
+    monthly_follows = models.ManyToManyField('auth.User', related_name='monthly_follows')
+    all_follows = models.ManyToManyField('auth.User', related_name='all_follows')
     published_date = models.DateTimeField(
             default=timezone.now)
 
@@ -28,6 +32,38 @@ class Post(models.Model):
         :return: Integer: Subscribes for the post
         """
         return self.likes.count()
+
+    @property
+    def total_daily(self):
+        """
+        Followers for the post
+        :return: Integer: Subscribes for the post
+        """
+        return self.daily_follows.count()
+
+    @property
+    def total_weekly(self):
+        """
+        Followers for the post
+        :return: Integer: Subscribes for the post
+        """
+        return self.weekly_follows.count()
+
+    @property
+    def total_monthly(self):
+        """
+        Followers for the post
+        :return: Integer: Subscribes for the post
+        """
+        return self.monthly_follows.count()
+
+    @property
+    def total_all_follows(self):
+        """
+        Likes for the post
+        :return: Integer: Subscribes for the post
+        """
+        return self.all_follows.count()
 
 
 class Comment(models.Model):
