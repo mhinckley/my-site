@@ -71,7 +71,21 @@ def to_posts(request, to_field):
 
 def my_list(request):
     posts = Post.objects.filter(likes=request.user.pk).order_by('-published_date')
-    return render(request, 'board/post_list.html', {'posts': posts})
+    liked_posts = Post.objects.filter(likes=request.user.pk)
+    paginator = Paginator(posts, 10)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        posts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        posts = paginator.page(paginator.num_pages)
+
+    return render(request, 'board/post_list.html', {'posts': posts, 'liked_posts': liked_posts})
+
+
 
 
 #Parameters in the def are recieved from the url
