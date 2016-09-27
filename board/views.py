@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, render, get_object_or_404
 from django.utils import timezone
-from .models import Post, Comment
+from .models import Post, Comment, Follow
 from .forms import PostForm
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login
@@ -181,25 +181,29 @@ def like_button(request):
 
 @login_required(login_url='/user')
 def daily_button(request):
+    context = {}
     if request.method == 'POST':
         user = request.user
-        id = request.POST.get('pk', None)
+        id = request.POST.get('pk')
         post = get_object_or_404(Post, pk=id)
-            
-        if post.weekly_follows.filter(id=user.id).exists():
-            post.weekly_follows.remove(user)
-            post.daily_follows.add(user)
-        if post.monthly_follows.filter(id=user.id).exists():
-            post.monthly_follows.remove(user)
-            post.daily_follows.add(user)
-        if post.daily_follows.filter(id=user.id).exists():
-            post.daily_follows.remove(user)
-            post.all_follows.remove(user) 
-        else:
-            post.daily_follows.add(user)
-            post.all_follows.add(user)
 
-    context = {'daily_count': post.total_daily, 'weekly_count': post.total_weekly, 'monthly_count': post.total_monthly, 'all_count': post.total_all_follows_count}
+        frequency = int(request.POST.get('frequency'))
+        follows = Follow.objects.filter(user=user, post=post)
+
+        if follows.exists():
+            if follows.first().frequency == frequency:
+                follows.delete()
+            else:
+                follows.update(frequency=frequency)
+        else:
+            Follow.objects.create(user=user, post=post, frequency=frequency)
+
+        context = {
+            'total_daily': post.total_daily,
+            'total_weekly': post.total_weekly,
+            'total_monthly': post.total_monthly,
+            'all_count': post.total_all_follows
+        }
     return JsonResponse(context)
 
 
@@ -209,19 +213,6 @@ def weekly_button(request):
         user = request.user
         id = request.POST.get('pk', None)
         post = get_object_or_404(Post, pk=id)
-
-        if post.daily_follows.filter(id=user.id).exists():
-            post.daily_follows.remove(user)
-            post.weekly_follows.add(user)
-        if post.monthly_follows.filter(id=user.id).exists():
-            post.monthly_follows.remove(user)
-            post.weekly_follows.add(user)
-        if post.weekly_follows.filter(id=user.id).exists():
-            post.weekly_follows.remove(user)
-            post.all_follows.remove(user) 
-        else:
-            post.weekly_follows.add(user)
-            post.all_follows.add(user)
 
     context = {'daily_count': post.total_daily, 'weekly_count': post.total_weekly, 'monthly_count': post.total_monthly, 'all_count': post.total_all_follows_count}
     return JsonResponse(context)
@@ -234,18 +225,7 @@ def monthly_button(request):
         id = request.POST.get('pk', None)
         post = get_object_or_404(Post, pk=id)
 
-        if post.daily_follows.filter(id=user.id).exists():
-            post.daily_follows.remove(user)
-            post.monthly_follows.add(user)
-        if post.weekly_follows.filter(id=user.id).exists():
-            post.weekly_follows.remove(user)
-            post.monthly_follows.add(user)
-        if post.monthly_follows.filter(id=user.id).exists():
-            post.monthly_follows.remove(user)
-            post.all_follows.remove(user) 
-        else:
-            post.monthly_follows.add(user)
-            post.all_follows.add(user)
+
 
     context = {'daily_count': post.total_daily, 'weekly_count': post.total_weekly, 'monthly_count': post.total_monthly, 'all_count': post.total_all_follows_count}
     return JsonResponse(context)

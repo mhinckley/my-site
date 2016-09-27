@@ -31,26 +31,15 @@
 
                 <!--<p class="sub">{{ post.published_date|date:"F n, Y" }}</p>-->
                 <p class="sub">Remind me:  
-                  <span>
-                    <button type="button" class="btn btn-default-sm remind-btn daily-btn" name="{{ post.id }}" value="Daily" />
-                      <span class="daily_count">Daily {{ post.total_daily }}</span>
+                    <button type="button" class="btn btn-default-sm daily daily-btn follow-button" name="{{ post.id }}" value="1">
+                      Daily <span class="daily_count">{{ post.total_daily }}</span>
                     </button>
-                  </span>
-                  <span>
-                    <button type="button" class="btn btn-default-sm remind-btn weekly-btn" name="{{ post.id }}" value="Weekly" />
-                      <span class="weekly_count">Weekly {{ post.total_weekly }}</span>
+                    <button type="button" class="btn btn-default-sm daily daily-btn follow-button" name="{{ post.id }}" value="3">
+                      Weekly <span class="weekly_count">{{ post.total_weekly }}</span>
                     </button>
-                  </span>
-                  <span>
-                    <button type="button" class="btn btn-default-sm remind-btn monthly-btn" name="{{ post.id }}" value="Monthly" />
-                      <span class="monthly_count">Monthly {{ post.total_monthly }}</span>
+                    <button type="button" class="btn btn-default-sm daily daily-btn follow-button" name="{{ post.id }}" value="6">
+                      Monthly <span class="monthly_count">{{ post.total_monthly }}</span>
                     </button>
-                  </span>
-                  <span>
-                    <button type="button" class="btn btn-default-sm remind-btn counter-btn" name="{{ post.id }}" value="Counter" />
-                      <span class="all_count">Total {{ post.total_all_follows }}</span>
-                    </button>
-                  </span>
                 </p>
             
             </div>
@@ -135,8 +124,30 @@
                            }
                       });
                   })
-                </script>
 
+                  $('.follow-button').click(function(){
+                    var pk = $(this).attr('name');
+                    $.ajax({
+                             type: "POST",
+                             url: "{% url 'daily_button' %}",
+                             data: {
+                                 'pk': pk,
+                                 'frequency': $(this).val().toLowerCase(),
+                                 'csrfmiddlewaretoken': '{{ csrf_token }}'
+                               },
+                             dataType: "json",
+                             success: function(response) {
+                                    $('.post' + pk + ' .daily_count').html(response.total_daily);
+                                    $('.post' + pk + ' .weekly_count').html(response.total_weekly);
+                                    $('.post' + pk + ' .monthly_count').html(response.total_monthly);
+                                    $('.post' + pk + ' .all_count').html(response.all_count);
+                              },
+                             error: function(response, e) {
+                                    console.log('Something went wrong.');
+                             }
+                        });
+                    })
+                </script>
 
 
 {% endblock %}

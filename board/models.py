@@ -11,10 +11,6 @@ class Post(models.Model):
     summary = models.TextField(max_length=400)
     contributor = models.CharField(max_length=50)
     likes = models.ManyToManyField('auth.User', related_name='likes')
-    daily_follows = models.ManyToManyField('auth.User', related_name='daily_follows')
-    weekly_follows = models.ManyToManyField('auth.User', related_name='weekly_follows')
-    monthly_follows = models.ManyToManyField('auth.User', related_name='monthly_follows')
-    all_follows = models.ManyToManyField('auth.User', related_name='all_follows')
     published_date = models.DateTimeField(
             default=timezone.now)
 
@@ -33,13 +29,20 @@ class Post(models.Model):
         """
         return self.likes.count()
 
+    def total_follows(self, frequency):
+        """
+        Followers for the post
+        :return: Integer: Subscribes for the post
+        """
+        return self.follow_set.filter(frequency=frequency).count()
+
     @property
     def total_daily(self):
         """
         Followers for the post
         :return: Integer: Subscribes for the post
         """
-        return self.daily_follows.count()
+        return self.total_follows(frequency=Follow.DAILY)
 
     @property
     def total_weekly(self):
@@ -47,7 +50,7 @@ class Post(models.Model):
         Followers for the post
         :return: Integer: Subscribes for the post
         """
-        return self.weekly_follows.count()
+        return self.total_follows(frequency=Follow.WEEKLY)
 
     @property
     def total_monthly(self):
@@ -55,7 +58,7 @@ class Post(models.Model):
         Followers for the post
         :return: Integer: Subscribes for the post
         """
-        return self.monthly_follows.count()
+        return self.total_follows(frequency=Follow.MONTHLY)
 
     @property
     def total_all_follows(self):
@@ -63,7 +66,7 @@ class Post(models.Model):
         Likes for the post
         :return: Integer: Subscribes for the post
         """
-        return self.all_follows.count()
+        return self.follow_set.count()
 
 
 class Comment(models.Model):
@@ -72,3 +75,22 @@ class Comment(models.Model):
     post = models.ForeignKey(Post)
     created_date = models.DateTimeField(
             default=timezone.now)
+
+
+class Follow(models.Model):
+    user = models.ForeignKey('auth.User')
+    post = models.ForeignKey(Post)
+    DAILY = 1
+    WEEKLY = 3
+    MONTHLY = 6
+    FREQUENCY_CHOICES = (
+        (DAILY, 'daily'),
+        (WEEKLY, 'weekly'),
+        (MONTHLY, 'monthly'),
+    )
+    frequency = models.PositiveSmallIntegerField(
+        choices=FREQUENCY_CHOICES,
+    )
+
+    class Meta:
+        unique_together = ("user", "post")
