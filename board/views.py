@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect, render, get_object_or_404
 from django.utils import timezone
-from .models import Post, Comment, Follow
-from .forms import PostForm
+from .models import Post, Comment, Follow, Tag, PostTag
+from .forms import PostForm, EmailUserCreationForm
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import CreateView
 from django.core.urlresolvers import reverse
@@ -18,6 +17,9 @@ except ImportError:
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    tag_name = request.GET.get('tag')
+    if tag_name:
+        posts = posts.filter(posttag__tag__text=tag_name)
     liked_posts = Post.objects.filter(likes=request.user.pk)
     paginator = Paginator(posts, 10)
     page = request.GET.get('page')
@@ -32,9 +34,16 @@ def post_list(request):
 
     return render(request, 'board/post_list.html', {'posts': posts, 'liked_posts': liked_posts})
 
+
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'board/post_detail.html', {'post': post})
+    liked_posts = Post.objects.filter(likes=request.user.pk)
+    daily_post = len(post.follow_set.filter(user=request.user.pk, frequency=Follow.DAILY)) #TRUE (1) OR FALSE (0) if following daily
+    weekly_post = len(post.follow_set.filter(user=request.user.pk, frequency=Follow.WEEKLY)) #TRUE (1) OR FALSE (0) if following weekly
+    monthly_post = len(post.follow_set.filter(user=request.user.pk, frequency=Follow.MONTHLY)) #TRUE (1) OR FALSE (0) if following monthly
+    return render(request, 'board/post_detail.html', {'post': post, 'liked_posts': liked_posts, 
+        'daily_post': daily_post, 'weekly_post': weekly_post, 'monthly_post': monthly_post})
+
 
 def post_new(request):
     if request.method == "POST":
@@ -49,17 +58,17 @@ def post_new(request):
         form = PostForm()
     return render(request, 'board/post_edit.html', {'form': form})
 
-def contributor_posts(request, contributor):
-    posts = Post.objects.filter(contributor=contributor).order_by('-published_date')
+def clazz_posts(request, clazz):
+    posts = Post.objects.filter(clazz=clazz).order_by('-published_date')
     return render(request, 'board/post_list.html', {'posts': posts})
 
-def genre_posts(request, content_type):
-    posts = Post.objects.filter(content_type=content_type).order_by('-published_date')
-    return render(request, 'board/post_list.html', {'posts': posts})
+#def genre_posts(request, content_type):
+#    posts = Post.objects.filter(content_type=content_type).order_by('-published_date')
+#    return render(request, 'board/post_list.html', {'posts': posts})
 
-def remember_posts(request, when):
-    posts = Post.objects.filter(when=when).order_by('-published_date')
-    return render(request, 'board/post_list.html', {'posts': posts})
+#def remember_posts(request, when):
+#    posts = Post.objects.filter(when=when).order_by('-published_date')
+#    return render(request, 'board/post_list.html', {'posts': posts})
 
 def user_posts(request, author):
     posts = Post.objects.filter(author__username=author).order_by('-published_date')
@@ -95,7 +104,7 @@ def my_list(request):
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = EmailUserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
             new_user = authenticate(username=form.cleaned_data['username'],
@@ -106,7 +115,7 @@ def register(request):
             return HttpResponseRedirect('/')
 
     else:
-        form = UserCreationForm()
+        form = EmailUserCreationForm()
     return render(request, "registration/register.html", {
         'form': form,
     })
@@ -180,7 +189,7 @@ def like_button(request):
 
 
 @login_required(login_url='/user')
-def daily_button(request):
+def follow_button(request):
     context = {}
     if request.method == 'POST':
         user = request.user
@@ -202,34 +211,9 @@ def daily_button(request):
             'total_daily': post.total_daily,
             'total_weekly': post.total_weekly,
             'total_monthly': post.total_monthly,
-            'all_count': post.total_all_follows
+            'total_all': post.total_all_follows
         }
     return JsonResponse(context)
-
-
-@login_required(login_url='/user')
-def weekly_button(request):
-    if request.method == 'POST':
-        user = request.user
-        id = request.POST.get('pk', None)
-        post = get_object_or_404(Post, pk=id)
-
-    context = {'daily_count': post.total_daily, 'weekly_count': post.total_weekly, 'monthly_count': post.total_monthly, 'all_count': post.total_all_follows_count}
-    return JsonResponse(context)
-
-
-@login_required(login_url='/user')
-def monthly_button(request):
-    if request.method == 'POST':
-        user = request.user
-        id = request.POST.get('pk', None)
-        post = get_object_or_404(Post, pk=id)
-
-
-
-    context = {'daily_count': post.total_daily, 'weekly_count': post.total_weekly, 'monthly_count': post.total_monthly, 'all_count': post.total_all_follows_count}
-    return JsonResponse(context)
-
 
 
 def home(request):

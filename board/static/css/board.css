@@ -1,5 +1,5 @@
 body {
-    font-family: 'Varela Round', sans-serif;
+    font-family: 'Roboto', sans-serif;
 
 }
 
@@ -32,7 +32,6 @@ h3 {
     margin-left: 20px;
     height: 100px;
     width: 100%;
-
     margin-top: 70px
 }
 
@@ -99,23 +98,171 @@ h3 {
 
 .navbar-brand {
     padding-left: 20px;
+    font-size: 35px;
+    font-weight: bolder;
+    font-variant: small-caps;
 }
 
+
+.navbar-custom {
+    background-color:pink;
+    color:black;
+    border-radius:0;
+}
+
+.navbar-custom .navbar-nav > li > a {
+    color: black;
+}
+.navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
+    color: black;
+    background-color:transparent;
+}
+.navbar-custom .navbar-brand {
+    color: black;
+}
 
 .btn-default-sm {
     background-color: white; 
-    border-color: gray; 
 }
 
-.daily-btn {
-    font-size: 8px; 
-    padding: 0px;
-    width: 55px;
+
+.detail-top-row {
+   background-color: black;
+   float: left;
+   color: white;
+   margin-left: -10px;
+   margin-top: -20px;
 }
 
-.btn-selected{
-    background: gray;
-    border-color: gray;
+.detail-top {
+   min-height: 350px;
+   text-align: center;
+   padding-top: 30px;
+   display:table;
+}
+
+.detail-align {
+    display: table-cell;
+    vertical-align:middle;
+}
+
+.detail-text {
     color: white;
+    font-size: 20px;
+    font-weight: bold;
 }
 
+.detail-to-text {
+    color: #6ecadc;
+    font-size: 42px;
+    font-weight: bolder;
+    line-height: 1.2;
+}
+
+.detail-then-text {
+    color: #e9a820;
+    font-size: 42px;
+    font-weight: bolder;
+    line-height: 1.2;
+}
+
+.detail-above-button-row{
+    background-color: black;
+    margin-left: -20px;
+    text-align: center; 
+    min-height: 70px;      
+}
+
+.detail-button-row{    
+    margin-left: -20px;
+    text-align: center;
+    margin-top: -35px;      
+}
+
+.detail-like-button{
+    min-height: 70px;
+    font-size: 25px;   
+    min-width: 400px;
+}
+
+
+
+.detail-second-row {
+    background-color: white;        
+    margin-left: -20px;
+    color: black;
+    padding-bottom: 100px;
+    font-size: 18px;
+}
+
+.detail-second-section {
+    padding-top: 70px;
+    border-top: solid; 
+    border-color: white;
+}
+
+.detail-second-head {
+    font-weight: bolder;
+    font-size: 22px;
+}
+
+
+.detail-second-summary {
+    line-height: 1.75;
+}
+
+.detail-second-social {
+    line-height: 1.75;
+    border-top: solid;
+    border-color: #d6d6d6;
+    border-width: 1px;
+    margin-top: 20px;
+    padding-top: 10px;
+
+}
+
+.like-text {
+
+}
+
+
+.detail-second-example {
+    padding-right: 55px;
+    line-height: 1.75;
+}
+
+.detail-third-row {
+    background: #d3d3d3; 
+    margin-left: -20px;
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+.detail-third-text {
+    padding-top: 30px; 
+    padding-bottom: 30px;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+
+
+.detail-fourth-row {
+    margin-top: 40px;
+}
+
+.detail-fourth-head {
+    font-weight: bolder;
+    font-size: 22px;
+    text-align: center;
+}
+
+.detail-fourth-comment {
+    padding-top: 30px; 
+    padding-bottom: 30px;
+    text-align: left;
+    color: black;
+    font-size: 16px;
+}
