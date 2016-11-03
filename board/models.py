@@ -93,6 +93,14 @@ class Post(models.Model):
         return self.comment_set.count()
 
 
+class Proof(models.Model):
+    author = models.ForeignKey('auth.User')
+    person = models.CharField(max_length=30)
+    caption = models.CharField(max_length=105)
+    post = models.ForeignKey(Post)
+    created_date = models.DateTimeField(
+            default=timezone.now)
+
 
 class Comment(models.Model):
     author = models.ForeignKey('auth.User')

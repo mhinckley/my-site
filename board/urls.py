@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^post/to_field/(?P<to_field>[a-zA-Z0-9 "-]+)/$', views.to_posts, name='to_posts'),
     url(r'^register/$', views.register, name='register'), # ADD NEW PATTERN!
     url(r'^post/(?P<post>\d+)/comment/$', views.CommentCreate.as_view(), name='comment_new'),
+    url(r'^post/(?P<post>\d+)/proof/$', views.ProofCreate.as_view(), name='proof_new'),
     url(r'^like/$', views.like_button, name='like_button'),
     url(r'^follow/$', views.follow_button, name='follow_button'),
     url(r'^post/mylist/$', views.my_list, name='my_list'),

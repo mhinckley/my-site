@@ -50,24 +50,22 @@
 <div class="row detail-second-row">
     <div class="col-md-2"></div>    
     <div class="col-md-5 detail-second-section">
-        <h3><span class="detail-second-head">Social Proof</span> (+New Example)</h3>
+        <h3><span class="detail-second-head">Proof points</span> 
+          <a href="{% url 'proof_new' post=post.pk %}">
+            <span>(+new point)</span>
+          </a>
+        </h3>
         <div class="detail-second-example">
             <ul>
-                <li>Sergio DeMello</li>
-                <li>Bill Gates</li>
-                <li>Warren Buffet</li>
-                <li>Barrack Obama</li>
+                {% for proof in post.proof_set.all %}
+                  <li>{{ proof.person }}: {{ proof.caption }}</li>
+                {% endfor %}
             </ul>
         </div>
     </div>
     <div class="col-md-3 detail-second-section">
         <h3>
-          <span class="detail-second-head">Author notes</span>
-          <span>  (</span>
-          <a href="{% url 'user_posts' author=post.author %}">
-            <span>{{post.author}}</span>
-          </a>
-          <span>)</span>
+          <span class="detail-second-head">Notes by </span><a href="{% url 'user_posts' author=post.author %}"><span class="detail-second-head">{{post.author}}</a>
        </h3>
         <div class="detail-second-summary">{{ post.summary }}</div>
 <!--        <div class="detail-second-social">
